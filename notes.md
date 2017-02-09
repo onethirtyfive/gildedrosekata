@@ -33,3 +33,28 @@ code. (Loops are less composable than single operations.)
 6. Implement each process.
 7. Extract shared functionality into common code.
 
+
+## commit: conventions, please
+
+First things first: a random function in the global namespace is garbage.
+
+Let's make the code at least pretend to be Ruby.
+
+### In This Commit
+
+1. Introduce `GildedRose` namespace.
+2. Move current crappy implementation to this namespace.
+3. Update references in to this lib spec.
+4. Remove `should` expectations in spec in favor of `expect`.
+
+### Mental TODO Roadmap
+
+1. No need to loop in `#update_quality`. Make this responsibility of calling 
+code. (Loops are less composable than single operations.)
+2. Identify inputs and outputs of "quality update" process. Kill mutation of 
+`Item` struct.
+3. Reassign namespace to terser `lib/gr`.
+4. Implement each process.
+5. Remove garbage Given/When/Then rspec extension. Just use rspec.
+6. Extract shared functionality into common code.
+
