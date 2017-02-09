@@ -144,3 +144,58 @@ But now our function is named poorly. (It always was lol.) We're not
 5. Rework specs to reflect these processes.
 6. Remove garbage Given/When/Then rspec extension. Just use rspec.
 
+
+## commit: process of separation
+
+Now we need to think a bit harder. What is `#appraise` doing? Luckily, because 
+we made it a deterministic function, we can tell everything we need to know by 
+its *inputs* and *outputs*.
+
+It takes a product's:
+
+1. name
+2. sell\_in
+3. quality
+
+And produces new:
+
+1. sell\_in
+2. quality
+
+Name is invariant. OK. But we have two outputs. We know that, AT MOST, each of 
+these outputs needs three pieces of data (the inputs). Let's dig into our 
+implementation and see what each of them needs.
+
+Deriving the "sell\_in" output *ever* requires:
+
+1. name
+
+Well, that's not surprising. We appraise "sell\_in" for non-legendary items.
+
+Deriving the "quality" output *ever* requires:
+
+1. name
+2. sell\_in
+2. quality
+
+So, "quality" is way more state dependent than "sell\_in". Good to know.
+
+Let's separate the two. Introducing `#adjust_sell_in`. It's what we do when 
+appraising to square away the new "sell\_in" for this appraisal.
+
+We should test it, too.
+
+### In This Commit
+
+1. Separate `adjust_sell_in` function.
+2. Add specs.
+
+### Mental TODO Roadmap
+
+1. Discover the processes entangled in the method.
+2. Implement each process. (Maybe multiple commits.)
+3. Reassign namespace to terser `lib/gr`.
+4. Extract shared functionality into common code.
+5. Rework specs to reflect these processes.
+6. Remove garbage Given/When/Then rspec extension. Just use rspec.
+

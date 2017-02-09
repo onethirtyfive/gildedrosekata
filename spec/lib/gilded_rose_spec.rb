@@ -2,6 +2,26 @@ require 'rspec/given'
 require 'gilded_rose'
 
 describe GildedRose do
+  describe "#adjust_sell_in" do
+    subject { described_class.method(:adjust_sell_in) }
+
+    context 'when name is "Sulfuras, Hand of Ragnaros"' do
+      let(:name) { "Sulfuras, Hand of Ragnaros" }
+
+      it 'does not adjust the value' do
+        expect(subject.call(name, 1)).to eq(1)
+      end
+    end
+
+    context 'when name is "Sulfuras, Hand of Ragnaros"' do
+      let(:name) { "Lol, the Banhammer" }
+
+      it 'adjusts the value' do
+        expect(subject.call(name, 1)).to eq(0)
+      end
+    end
+  end
+
   describe "#appraise" do
     subject { described_class.method(:appraise) }
 

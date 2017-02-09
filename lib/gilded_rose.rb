@@ -1,6 +1,14 @@
 module GildedRose
+  def adjust_sell_in(name, sell_in)
+    if name != 'Sulfuras, Hand of Ragnaros'
+      sell_in - 1
+    else
+      sell_in
+    end
+  end
+  module_function :adjust_sell_in
+
   def appraise(name, sell_in, quality)
-    new_sell_in = sell_in
     new_quality = quality
 
     if name != 'Aged Brie' && name != 'Backstage passes to a TAFKAL80ETC concert'
@@ -13,12 +21,12 @@ module GildedRose
       if new_quality < 50
         new_quality += 1
         if name == 'Backstage passes to a TAFKAL80ETC concert'
-          if new_sell_in < 11
+          if sell_in < 11
             if new_quality < 50
               new_quality += 1
             end
           end
-          if new_sell_in < 6
+          if sell_in < 6
             if new_quality < 50
               new_quality += 1
             end
@@ -26,9 +34,9 @@ module GildedRose
         end
       end
     end
-    if name != 'Sulfuras, Hand of Ragnaros'
-      new_sell_in -= 1
-    end
+
+    new_sell_in = adjust_sell_in(name, sell_in)
+
     if new_sell_in < 0
       if name != "Aged Brie"
         if name != 'Backstage passes to a TAFKAL80ETC concert'
