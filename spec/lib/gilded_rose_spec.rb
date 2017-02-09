@@ -10,7 +10,7 @@ describe GildedRose do
       Given(:initial_quality) { 10 }
       Given(:item) { Item.new(name, initial_sell_in, initial_quality) }
 
-      When { subject.call([item]) }
+      When { subject.call(item) }
 
       context "normal item" do
         Given(:name) { "NORMAL ITEM" }
@@ -200,22 +200,6 @@ describe GildedRose do
         end
       end
     end
-
-    context "with several objects" do
-      Given(:items) {
-        [
-          Item.new("NORMAL ITEM", 5, 10),
-          Item.new("Aged Brie", 3, 10),
-        ]
-      }
-
-      When { subject.call(items) }
-
-      Then { expect(items[0].quality).to eq(9) }
-      Then { expect(items[0].sell_in).to eq(4) }
-
-      Then { expect(items[1].quality).to eq(11) }
-      Then { expect(items[1].sell_in).to eq(2) }
-    end
   end
 end
+

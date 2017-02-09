@@ -58,3 +58,25 @@ code. (Loops are less composable than single operations.)
 5. Remove garbage Given/When/Then rspec extension. Just use rspec.
 6. Extract shared functionality into common code.
 
+
+## commit: out of the loop
+
+First things first: remove the loop from `#update_quality`.
+
+Since the only calling code is our spec, we'll make the spec loop over items.
+
+### In This Commit
+
+1. `spec/lib/gilded_rose_spec.rb` calls `update_quality` with one item.
+2. Delete some old specs testing "multiple items", as the functionality is 
+covered already by the sufficiently general existing specs.
+
+### Mental TODO Roadmap
+
+1. Identify inputs and outputs of "quality update" process.
+2. Kill mutation of `Item` struct. Return a new struct instead.
+3. Reassign namespace to terser `lib/gr`.
+4. Implement each process.
+5. Remove garbage Given/When/Then rspec extension. Just use rspec.
+6. Extract shared functionality into common code.
+
