@@ -80,3 +80,67 @@ covered already by the sufficiently general existing specs.
 5. Remove garbage Given/When/Then rspec extension. Just use rspec.
 6. Extract shared functionality into common code.
 
+
+## commit: smoothing out wrinkles
+
+Looking at our function, two fields are conditionally changed on the provided
+`Item`:
+
+* `quality`
+* `sell_in` (if item is not "Sulfuras, Hand of Ragnaros")
+
+Since these are *ever* changed by our function, they *could* instead be the 
+outputs. (Rather than changing them on our `Item`.) Since mutation causes 
+unanticipated states, we prefer not doing it.
+
+It appears our implementation needs `name`, `sell_in`, and `quantity` all to 
+do its work, at least conditionally. (That's good enough--*ever* is the 
+criterion.)
+
+The way our implementation gets this information is by querying the provided 
+`Item`. We don't have to do that, though. We could do this:
+
+    def update_quality(item)
+      name, sell_in, quality = *item
+      ...
+
+But then our function still has knowledge of `Item`. So let's go a step 
+further and move those three fields to proper function arguments. This way, 
+our function can stay happily oblivious to `Item`:
+
+    def update_quality(name, sell_in, quality)
+      ...
+
+And our outputs (the things ever changed) can be `quality` and `sell_in`,
+returned as an array. Since these two will change, we need to copy them
+locally:
+
+    def update_quality(name, sell_in, quality)
+      new_sell_in = sell_in
+      new_quality = quality
+      ...
+
+Since we're not mutating the provided `Item`, we must tweak our specs. Now, 
+there is no `When`--we have a deterministic function that doesn't do anything 
+dangerous. In fact, we no longer need `Item`. So let's delete it.
+
+But now our function is named poorly. (It always was lol.) We're not 
+"updating" anything. Let's call it `#appraise`.
+
+### In This Commit
+
+1. Update `#update_quality` to take the args it needs rather than a struct.
+2. Cache local `sell_in` and `quality` vals, building new ones for return.
+3. Stop mutating `Item`, realize we don't need it right now.
+4. Rename `#update_quality` to `#appraise`.
+5. Update specs to call the newly defined function.
+
+### Mental TODO Roadmap
+
+1. Discover the processes entangled in the method.
+2. Implement each process. (Maybe multiple commits.)
+3. Reassign namespace to terser `lib/gr`.
+4. Extract shared functionality into common code.
+5. Rework specs to reflect these processes.
+6. Remove garbage Given/When/Then rspec extension. Just use rspec.
+
