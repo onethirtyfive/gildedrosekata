@@ -1,0 +1,7 @@
+_Store
+.bundle
+.env
+*.swp
+tmp
+vendor
+
