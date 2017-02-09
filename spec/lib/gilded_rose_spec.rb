@@ -22,6 +22,54 @@ describe GildedRose do
     end
   end
 
+  describe "#appraise_aged_brie" do
+    subject { described_class.method(:appraise_aged_brie) }
+
+    Given(:name)            { "Aged Brie" }
+    Given(:initial_sell_in) { 5 }
+    Given(:initial_quality) { 10 }
+
+    Given(:adjusted_sell_in) do
+      described_class.adjust_sell_in(name, initial_sell_in)
+    end
+
+    Given(:new_quality) { subject.call(adjusted_sell_in, initial_quality) }
+
+    context "before sell date" do
+      Then { expect(new_quality).to eq(initial_quality + 1) }
+
+      context "with max quality" do
+        Given(:initial_quality) { 50 }
+        Then { expect(new_quality).to eq(initial_quality) }
+      end
+    end
+
+    context "on sell date" do
+      Given(:initial_sell_in) { 0 }
+      Then { expect(new_quality).to eq(initial_quality + 2) }
+
+      context "near max quality" do
+        Given(:initial_quality) { 49 }
+        Then { expect(new_quality).to eq(50) }
+      end
+
+      context "with max quality" do
+        Given(:initial_quality) { 50 }
+        Then { expect(new_quality).to eq(initial_quality) }
+      end
+    end
+
+    context "after sell date" do
+      Given(:initial_sell_in) { -10 }
+      Then { expect(new_quality).to eq(initial_quality + 2) }
+
+      context "with max quality" do
+        Given(:initial_quality) { 50 }
+        Then { expect(new_quality).to eq(initial_quality) }
+      end
+    end
+  end
+
   describe "#appraise" do
     subject { described_class.method(:appraise) }
 
@@ -61,46 +109,6 @@ describe GildedRose do
         context "of zero quality" do
           Given(:initial_quality) { 0 }
           Then { expect(new_quality).to eq(0) }
-        end
-      end
-
-      context "Aged Brie" do
-        Given(:name) { "Aged Brie" }
-
-        Invariant { expect(new_sell_in).to eq(initial_sell_in - 1) }
-
-        context "before sell date" do
-          Then { expect(new_quality).to eq(initial_quality + 1) }
-
-          context "with max quality" do
-            Given(:initial_quality) { 50 }
-            Then { expect(new_quality).to eq(initial_quality) }
-          end
-        end
-
-        context "on sell date" do
-          Given(:initial_sell_in) { 0 }
-          Then { expect(new_quality).to eq(initial_quality + 2) }
-
-          context "near max quality" do
-            Given(:initial_quality) { 49 }
-            Then { expect(new_quality).to eq(50) }
-          end
-
-          context "with max quality" do
-            Given(:initial_quality) { 50 }
-            Then { expect(new_quality).to eq(initial_quality) }
-          end
-        end
-
-        context "after sell date" do
-          Given(:initial_sell_in) { -10 }
-          Then { expect(new_quality).to eq(initial_quality + 2) }
-
-          context "with max quality" do
-            Given(:initial_quality) { 50 }
-            Then { expect(new_quality).to eq(initial_quality) }
-          end
         end
       end
 

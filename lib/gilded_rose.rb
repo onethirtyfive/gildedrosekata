@@ -8,10 +8,22 @@ module GildedRose
   end
   module_function :adjust_sell_in
 
+  def appraise_aged_brie(adjusted_sell_in, quality)
+    new_quality = quality
+
+    new_quality += 1
+    if adjusted_sell_in < 0
+      new_quality += 1
+    end
+
+    [new_quality, 50].min
+  end
+  module_function :appraise_aged_brie
+
   def appraise(name, sell_in, quality)
     new_quality = quality
 
-    if name != 'Aged Brie' && name != 'Backstage passes to a TAFKAL80ETC concert'
+    if name != 'Backstage passes to a TAFKAL80ETC concert'
       if new_quality > 0
         if name != 'Sulfuras, Hand of Ragnaros'
           new_quality -= 1
@@ -38,20 +50,14 @@ module GildedRose
     new_sell_in = adjust_sell_in(name, sell_in)
 
     if new_sell_in < 0
-      if name != "Aged Brie"
-        if name != 'Backstage passes to a TAFKAL80ETC concert'
-          if new_quality > 0
-            if name != 'Sulfuras, Hand of Ragnaros'
-              new_quality -= 1
-            end
+      if name != 'Backstage passes to a TAFKAL80ETC concert'
+        if new_quality > 0
+          if name != 'Sulfuras, Hand of Ragnaros'
+            new_quality -= 1
           end
-        else
-          new_quality = new_quality - new_quality
         end
       else
-        if new_quality < 50
-          new_quality += 1
-        end
+        new_quality = new_quality - new_quality
       end
     end
 

@@ -199,3 +199,29 @@ We should test it, too.
 5. Rework specs to reflect these processes.
 6. Remove garbage Given/When/Then rspec extension. Just use rspec.
 
+
+## commit: appraising the brie
+
+Let's go through `#appraise` for the "Aged Brie" product, removing one of the 
+variables, and rewrite it as a separate function `#appraise_aged_brie`.
+
+To accomplish this, we:
+
+1. Duplicate the code in `#appraise`.
+2. Delete huge chunks of conditional code which will never apply because 
+`name` is invariant.
+3. Notice that `new_sell_in` is never used before its definition, and so 
+make it an argument to this function.
+4. Combine a nested conditional into a new, top-level one.
+5. Combine two conditionals into a nested one based on `new_quality < 50`.
+6. Note that `adjusted_sell_in` is invariant, so remove it from the results 
+(the calling code already knows the value).
+7. Just cap quality at 50 explicitly, so we don't need branch logic.
+7. Remove references to "Aged Brie" in original function.
+8. Update "Aged Brie" specs to use this function instead.
+
+### In This Commit
+
+1. Code refactored as described above.
+2. Specs for `#appraise_aged_brie`.
+
