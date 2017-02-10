@@ -250,6 +250,22 @@ describe GildedRose do
       subject.call(item)
     end
 
+    it 'calls #apply_quality_ceiling' do
+      expect(described_class).to(
+        receive(:apply_quality_ceiling).
+        and_call_original
+      )
+      subject.call(item)
+    end
+
+    it 'calls #apply_quality_floor' do
+      expect(described_class).to(
+        receive(:apply_quality_floor).
+        and_call_original
+      )
+      subject.call(item)
+    end
+
     it 'returns an Item' do
       expect(subject.call(item)).to be_a(GildedRose::Item)
     end

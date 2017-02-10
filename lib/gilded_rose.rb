@@ -75,6 +75,8 @@ module GildedRose
         derive_quality_action(characterization, sell_in, quality),
         quality
       )
+    quality = apply_quality_ceiling(characterization, quality)
+    quality = apply_quality_floor(characterization, quality)
 
     Item.new(name, characterization, sell_in, quality)
   end

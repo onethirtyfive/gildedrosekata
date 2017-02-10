@@ -315,3 +315,14 @@ New `#tick` method which accepts an `Item` and:
 
 1. Write basic CLI utilizing `lib/gr`.
 
+
+## commit: cli
+
+Let's write a simple CLI with a starter database of our items in YAML.
+
+### In This Commit
+
+1. The CLI code.
+
+And that's it. :)
+
