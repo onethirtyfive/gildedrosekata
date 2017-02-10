@@ -1,11 +1,15 @@
 
 # Introduction
 
+Implementation of the ["Gilded Rose" coding kata](http://iamnotmyself.com/2011/02/13/refactor-this-the-gilded-rose-kata/).
+
+Based on the Ruby ready-to-go version found [here](https://github.com/jimweirich/gilded_rose_kata).
+
 This document is a stream of consciousness list of thoughts accompanying each 
 commit. The commits will be named in accordance with the sections below.
 
 
-## commit: inherited code
+## commit: "kata: inherited code"
 
 The complexity in lib/gilded\_rose.rb is out of control. The number of 
 branch combinations the code can take makes it impossible to reason about 
@@ -34,7 +38,7 @@ code. (Loops are less composable than single operations.)
 7. Extract shared functionality into common code.
 
 
-## commit: conventions, please
+## commit: "kata: conventions, please"
 
 First things first: a random function in the global namespace is garbage.
 
@@ -59,7 +63,7 @@ code. (Loops are less composable than single operations.)
 6. Extract shared functionality into common code.
 
 
-## commit: out of the loop
+## commit: "kata: out of the loop"
 
 First things first: remove the loop from `#update_quality`.
 
@@ -81,7 +85,7 @@ covered already by the sufficiently general existing specs.
 6. Extract shared functionality into common code.
 
 
-## commit: smoothing out wrinkles
+## commit: "kata: smoothing out wrinkles"
 
 Looking at our function, two fields are conditionally changed on the provided
 `Item`:
@@ -145,7 +149,7 @@ But now our function is named poorly. (It always was lol.) We're not
 6. Remove garbage Given/When/Then rspec extension. Just use rspec.
 
 
-## commit: process of separation
+## commit: "kata: process of separation"
 
 Now we need to think a bit harder. What is `#appraise` doing? Luckily, because 
 we made it a deterministic function, we can tell everything we need to know by 
@@ -200,7 +204,7 @@ We should test it, too.
 6. Remove garbage Given/When/Then rspec extension. Just use rspec.
 
 
-## commit: appraising the brie
+## commit: "kata: appraising the brie"
 
 Let's go through `#appraise` for the "Aged Brie" product, removing one of the 
 variables, and rewrite it as a separate function `#appraise_aged_brie`.
@@ -226,7 +230,7 @@ make it an argument to this function.
 2. Specs for `#appraise_aged_brie`.
 
 
-## commit: appraising the backstage passes
+## commit: "kata: appraising the backstage passes"
 
 Well, that went well. Let's do it for another product mentioned by name in 
 `#appraise`.
@@ -249,7 +253,7 @@ Let's do the backstage passes. We'll follow the same process as before, making
 6. Remove garbage Given/When/Then rspec extension. Just use rspec.
 
 
-## commit: appraising what's left
+## commit: "kata: appraising what's left"
 
 Our `#appraise` method is starting to look really anemic. Great!
 
@@ -273,7 +277,7 @@ Lather, rinse, repeat.
 6. Write basic CLI utilizing `lib/gr`.
 
 
-## commit: pattern matching, plz
+## commit: "kata: pattern matching, plz"
 
 We now have a collection of bespoke methods for dealing with different items.
 
@@ -310,13 +314,14 @@ New `#tick` method which accepts an `Item` and:
 3. Applies that action.
 4. Applies a ceiling to the quality, if applicable.
 5. Applies a floor to the quality, if applicable.
+6. Returns a brand new `Item` with the new information.
 
 ### Mental TODO Roadmap
 
-1. Write basic CLI utilizing `lib/gr`.
+1. Write basic CLI utilizing `lib/gilded_rose`.
 
 
-## commit: cli
+## commit: "kata: cli"
 
 Let's write a simple CLI with a starter database of our items in YAML.
 
