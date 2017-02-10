@@ -41,26 +41,20 @@ module GildedRose
   end
   module_function :appraise_backstage_passes
 
-  def appraise(name, sell_in, quality)
+  def appraise_sulfuras(adjusted_sell_in, quality)
+    quality
+  end
+  module_function :appraise_sulfuras
+
+  def appraise(adjusted_sell_in, quality)
     new_quality = quality
 
-    if new_quality > 0
-      if name != 'Sulfuras, Hand of Ragnaros'
-        new_quality -= 1
-      end
+    new_quality -= 1
+    if adjusted_sell_in < 0
+      new_quality -= 1
     end
 
-    new_sell_in = adjust_sell_in(name, sell_in)
-
-    if new_sell_in < 0
-      if new_quality > 0
-        if name != 'Sulfuras, Hand of Ragnaros'
-          new_quality -= 1
-        end
-      end
-    end
-
-    [new_sell_in, new_quality]
+    [new_quality, 0].max
   end
   module_function :appraise
 end

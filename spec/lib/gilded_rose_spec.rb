@@ -13,7 +13,7 @@ describe GildedRose do
       end
     end
 
-    context 'when name is "Sulfuras, Hand of Ragnaros"' do
+    context 'when name is not "Sulfuras, Hand of Ragnaros"' do
       let(:name) { "Lol, the Banhammer" }
 
       it 'adjusts the value' do
@@ -143,105 +143,97 @@ describe GildedRose do
     end
   end
 
+  describe "#appraise_sulfuras" do
+    subject { described_class.method(:appraise_backstage_passes) }
+
+    Given(:adjusted_sell_in) { 5 }
+    Given(:initial_quality)  { 50 }
+
+    Given(:new_quality) do
+      subject.call(adjusted_sell_in, initial_quality)
+    end
+
+    context "before sell date" do
+      Then { expect(new_quality).to eq(initial_quality) }
+    end
+
+    context "on sell date" do
+      Given(:adjusted_sell_in) { 0 }
+      Then { expect(new_quality).to eq(initial_quality) }
+    end
+
+    context "after sell date" do
+      Given(:adjusted_sell_in) { -10 }
+      Then { expect(new_quality).to eq(0) }
+    end
+  end
+
+  context "conjured item" do
+    before { pending }
+
+    Given(:name) { "Conjured Mana Cake" }
+
+    Invariant { expect(new_sell_in).to eq(initial_sell_in - 1) }
+
+    context "before the sell date" do
+      Given(:initial_sell_in) { 5 }
+      Then { expect(new_quality).to eq(initial_quality - 2) }
+
+      context "at zero quality" do
+        Given(:initial_quality) { 0 }
+        # Then { new_quality.should == initial_quality }
+      end
+    end
+
+    context "on sell date" do
+      Given(:initial_sell_in) { 0 }
+      Then { expect(new_quality).to eq(initial_quality - 4) }
+
+      context "at zero quality" do
+        Given(:initial_quality) { 0 }
+        # Then { new_quality.should == initial_quality }
+      end
+    end
+
+    context "after sell date" do
+      Given(:initial_sell_in) { -10 }
+      Then { expect(new_quality).to eq(initial_quality - 4) }
+
+      context "at zero quality" do
+        Given(:initial_quality) { 0 }
+        # Then { new_quality.should == initial_quality }
+      end
+    end
+  end
+
   describe "#appraise" do
     subject { described_class.method(:appraise) }
 
     context "with a single" do
-      Given(:initial_sell_in) { 5 }
+      Given(:adjusted_sell_in) { 5 }
       Given(:initial_quality) { 10 }
 
-      Given(:new_sell_in) do
-        new_sell_in, _ = subject.call(name, initial_sell_in, initial_quality)
-        new_sell_in
-      end
-
       Given(:new_quality) do
-        _, new_quality = subject.call(name, initial_sell_in, initial_quality)
-        new_quality
+        subject.call(adjusted_sell_in, initial_quality)
       end
 
-      context "normal item" do
-        Given(:name) { "NORMAL ITEM" }
-
-        Invariant { expect(new_sell_in).to eq(initial_sell_in - 1) }
-
-        context "before sell date" do
-          Then { expect(new_quality).to eq(initial_quality - 1) }
-        end
-
-        context "on sell date" do
-          Given(:initial_sell_in) { 0 }
-          Then { expect(new_quality).to eq(initial_quality - 2) }
-        end
-
-        context "after sell date" do
-          Given(:initial_sell_in) { -10 }
-          Then { expect(new_quality).to eq(initial_quality - 2) }
-        end
-
-        context "of zero quality" do
-          Given(:initial_quality) { 0 }
-          Then { expect(new_quality).to eq(0) }
-        end
+      context "before sell date" do
+        Then { expect(new_quality).to eq(initial_quality - 1) }
       end
 
-      context "Sulfuras" do
-        Given(:initial_quality) { 80 }
-        Given(:name) { "Sulfuras, Hand of Ragnaros" }
-
-        Invariant { expect(new_sell_in).to eq(initial_sell_in) }
-
-        context "before sell date" do
-          Then { expect(new_quality).to eq(initial_quality) }
-        end
-
-        context "on sell date" do
-          Given(:initial_sell_in) { 0 }
-          Then { expect(new_quality).to eq(initial_quality) }
-        end
-
-        context "after sell date" do
-          Given(:initial_sell_in) { -10 }
-          Then { expect(new_quality).to eq(initial_quality) }
-        end
+      context "on sell date" do
+        Given(:adjusted_sell_in) { -1 }
+        Then { expect(new_quality).to eq(initial_quality - 2) }
       end
 
-      context "conjured item" do
-        before { pending }
+      context "after sell date" do
+        Given(:adjusted_sell_in) { -10 }
+        Then { expect(new_quality).to eq(initial_quality - 2) }
+      end
 
-        Given(:name) { "Conjured Mana Cake" }
-
-        Invariant { expect(new_sell_in).to eq(initial_sell_in - 1) }
-
-        context "before the sell date" do
-          Given(:initial_sell_in) { 5 }
-          Then { expect(new_quality).to eq(initial_quality - 2) }
-
-          context "at zero quality" do
-            Given(:initial_quality) { 0 }
-            # Then { new_quality.should == initial_quality }
-          end
-        end
-
-        context "on sell date" do
-          Given(:initial_sell_in) { 0 }
-          Then { expect(new_quality).to eq(initial_quality - 4) }
-
-          context "at zero quality" do
-            Given(:initial_quality) { 0 }
-            # Then { new_quality.should == initial_quality }
-          end
-        end
-
-        context "after sell date" do
-          Given(:initial_sell_in) { -10 }
-          Then { expect(new_quality).to eq(initial_quality - 4) }
-
-          context "at zero quality" do
-            Given(:initial_quality) { 0 }
-            # Then { new_quality.should == initial_quality }
-          end
-        end
+      context "of zero quality" do
+        Given(:initial_quality) { 0 }
+        Then { expect(new_quality).to eq(0) }
       end
     end
   end

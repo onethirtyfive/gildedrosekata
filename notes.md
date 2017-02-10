@@ -248,3 +248,27 @@ Let's do the backstage passes. We'll follow the same process as before, making
 5. Rework specs to reflect these processes.
 6. Remove garbage Given/When/Then rspec extension. Just use rspec.
 
+
+## commit: appraising what's left
+
+Our `#appraise` method is starting to look really anemic. Great!
+
+There's just one more thing that sticks out: the legendary item.
+
+Lather, rinse, repeat.
+
+### In This Commit
+
+1. Code refactored as described above.
+2. Specs for `#appraise_backstage_passes`.
+3. Simply remainder of `#appraise`, fix specs.
+
+### Mental TODO Roadmap
+
+1. Extract shared concerns.
+2. Add processes for "conjured" items.
+3. Remove garbage Given/When/Then rspec extension. Just use rspec.
+4. Generalize code.
+5. Re-namespace code into `lib/gr`.
+6. Write basic CLI utilizing `lib/gr`.
+
