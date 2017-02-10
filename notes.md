@@ -272,3 +272,46 @@ Lather, rinse, repeat.
 5. Re-namespace code into `lib/gr`.
 6. Write basic CLI utilizing `lib/gr`.
 
+
+## commit: pattern matching, plz
+
+We now have a collection of bespoke methods for dealing with different items.
+
+Let's flex our brain a little bit to extract commonality of intent out from 
+the code. Generally:
+
+* The "sell\_in" attribute of an item with either stay the same or decrease.
+* The "quality" attribute can decrease, increase, or assume a constant value.
+
+For both "sell\_in" and "quality", changes are applied additively or by 
+assignment.
+
+We can further characterize the items thusly:
+
+* normal - items whose quality depreciates over time.
+* fleeting - items whose quality appreciates for a time, then vanishes.
+* vintage - items whose quality appreciates indefinitely.
+* enduring - items whose quality never changes.
+
+Because of the arbitrariness of the rules for "sell\_in" and "quality", we 
+should express effects as heuristics. In Ruby, this is best accomplished with
+strategies, or subroutines. To keep things simple, we'll have one strategy for 
+each characterization.
+
+We will also reintroduce `Item`, since it's no longer an albatross (and is 
+part of the project requirements).
+
+### In This Commit
+
+New `#tick` method which accepts an `Item` and:
+
+1. Gets the next `sell_in` value appropriate for the `Item`.
+2. Derives the action to take on an item's quality.
+3. Applies that action.
+4. Applies a ceiling to the quality, if applicable.
+5. Applies a floor to the quality, if applicable.
+
+### Mental TODO Roadmap
+
+1. Write basic CLI utilizing `lib/gr`.
+
