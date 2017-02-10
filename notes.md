@@ -225,3 +225,26 @@ make it an argument to this function.
 1. Code refactored as described above.
 2. Specs for `#appraise_aged_brie`.
 
+
+## commit: appraising the backstage passes
+
+Well, that went well. Let's do it for another product mentioned by name in 
+`#appraise`.
+
+Let's do the backstage passes. We'll follow the same process as before, making 
+`#appraise_backstage_passes`.
+
+### In This Commit
+
+1. Code refactored as described above.
+2. Specs for `#appraise_backstage_passes`.
+
+### Mental TODO Roadmap
+
+1. Discover the processes entangled in the method.
+2. Implement each process. (Maybe multiple commits.)
+3. Reassign namespace to terser `lib/gr`.
+4. Extract shared functionality into common code.
+5. Rework specs to reflect these processes.
+6. Remove garbage Given/When/Then rspec extension. Just use rspec.
+

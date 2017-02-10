@@ -20,44 +20,43 @@ module GildedRose
   end
   module_function :appraise_aged_brie
 
+  def appraise_backstage_passes(adjusted_sell_in, quality)
+    new_quality = quality
+
+    new_quality += 1
+
+    if adjusted_sell_in < 10
+      new_quality += 1
+    end
+
+    if adjusted_sell_in < 5
+      new_quality += 1
+    end
+
+    if adjusted_sell_in < 0
+      new_quality = 0
+    end
+
+    [new_quality, 50].min
+  end
+  module_function :appraise_backstage_passes
+
   def appraise(name, sell_in, quality)
     new_quality = quality
 
-    if name != 'Backstage passes to a TAFKAL80ETC concert'
-      if new_quality > 0
-        if name != 'Sulfuras, Hand of Ragnaros'
-          new_quality -= 1
-        end
-      end
-    else
-      if new_quality < 50
-        new_quality += 1
-        if name == 'Backstage passes to a TAFKAL80ETC concert'
-          if sell_in < 11
-            if new_quality < 50
-              new_quality += 1
-            end
-          end
-          if sell_in < 6
-            if new_quality < 50
-              new_quality += 1
-            end
-          end
-        end
+    if new_quality > 0
+      if name != 'Sulfuras, Hand of Ragnaros'
+        new_quality -= 1
       end
     end
 
     new_sell_in = adjust_sell_in(name, sell_in)
 
     if new_sell_in < 0
-      if name != 'Backstage passes to a TAFKAL80ETC concert'
-        if new_quality > 0
-          if name != 'Sulfuras, Hand of Ragnaros'
-            new_quality -= 1
-          end
+      if new_quality > 0
+        if name != 'Sulfuras, Hand of Ragnaros'
+          new_quality -= 1
         end
-      else
-        new_quality = new_quality - new_quality
       end
     end
 
